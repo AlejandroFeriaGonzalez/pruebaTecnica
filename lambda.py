@@ -17,7 +17,7 @@ REGION_NAME = os.environ.get("AWS_REGION", "us-east-1")
 # Constantes para el scraping
 ENTITY_VALUE = 'Agencia Nacional de Infraestructura'
 FIXED_CLASSIFICATION_ID = 13
-URL_BASE = "https://www.ani.gov.co/informacion-de-la-ani/normatividad?field_tipos_de_normas__tid=12&title=&body_value=&field_fecha__value%5Bvalue%5D%5Byear%5D="
+URL_BASE = r"https://www.ani.gov.co/informacion-de-la-ani/normatividad?field_tipos_de_normas__tid=12&title=&body_value=&field_fecha__value%5Bvalue%5D%5Byear%5D="
 
 # Clasificaciones de documentos
 CLASSIFICATION_KEYWORDS = {
