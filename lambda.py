@@ -1,14 +1,19 @@
-import requests
-from bs4 import BeautifulSoup
-import pandas as pd
-from datetime import datetime
-import re
-import psycopg2
-import boto3
-from botocore.exceptions import ClientError
 import json
 import os
-from typing import Dict, Any
+import re
+from datetime import datetime
+
+import boto3
+import pandas as pd
+import psycopg2
+import requests
+from botocore.exceptions import ClientError
+from bs4 import BeautifulSoup
+from dotenv import load_dotenv
+
+load_dotenv() # Cargar variables de entorno desde el archivo .env
+
+# TODO: cambiar los print por logging para mejor control de logs en producción
 
 # Configuración de AWS Secrets Manager
 SECRET_NAME = os.environ.get("SECRET_NAME", "Test")
@@ -29,12 +34,26 @@ CLASSIFICATION_KEYWORDS = {
 DEFAULT_RTYPE_ID = 14
 
 # Cliente de Secrets Manager
-secrets_client = boto3.client('secretsmanager', region_name=REGION_NAME)
-
 def get_secret():
     """
     Recupera las credenciales de la base de datos de AWS Secrets Manager.
+    En caso de no estar en producción, usa las variables del archivo .env
     """
+    environment = os.environ.get("ENVIRONMENT", "development")
+    
+    if environment != "production":
+        # Usar variables del archivo .env en desarrollo
+        return {
+            'DB_NAME': os.environ.get("DB_NAME"),
+            'DB_USERNAME': os.environ.get("DB_USERNAME"),
+            'DB_PASSWORD': os.environ.get("DB_PASSWORD"),
+            'DB_HOST': os.environ.get("DB_HOST"),
+            'DB_PORT': os.environ.get("DB_PORT", 5432)
+        }
+    
+    # En producción, usar AWS Secrets Manager
+    secrets_client = boto3.client('secretsmanager', region_name=REGION_NAME)
+
     try:
         get_secret_value_response = secrets_client.get_secret_value(SecretId=SECRET_NAME)
         secret = get_secret_value_response['SecretString']
@@ -79,6 +98,8 @@ class DatabaseManager:
         return self.cursor.fetchall()
 
     def bulk_insert(self, df, table_name):
+        """Realiza una inserción masiva de un DataFrame a la tabla especificada."""
+
         if not self.connection or not self.cursor:
             raise Exception("Database not connected")
         
