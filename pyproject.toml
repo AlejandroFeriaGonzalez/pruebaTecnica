@@ -12,6 +12,7 @@ dependencies = [
     "numpy>=2.0.2",
     "pandas>=2.3.3",
     "psycopg2-binary>=2.9.11",
+    "pydantic-settings>=2.11.0",
     "python-dotenv>=1.2.1",
     "requests==2.31.0",
 ]

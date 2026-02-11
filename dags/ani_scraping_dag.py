@@ -14,6 +14,8 @@ from datetime import datetime, timedelta
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 
+from config import settings
+
 # ---------------------------------------------------------------------------
 # Argumentos por defecto del DAG
 # ---------------------------------------------------------------------------
@@ -27,21 +29,11 @@ default_args = {
 }
 
 # ---------------------------------------------------------------------------
-# Número de páginas a scrapear (configurable via variable de Airflow)
+# Configuración del pipeline (centralizada en config.py)
 # ---------------------------------------------------------------------------
-NUM_PAGES = int(os.environ.get("ANI_NUM_PAGES", 9))
-
-# Ruta al archivo de reglas de validación dentro del contenedor
-RULES_PATH = os.environ.get(
-    "VALIDATION_RULES_PATH",
-    "/opt/airflow/configs/validation_rules.yaml",
-)
-
-# Ruta al archivo DDL
-INIT_SQL_PATH = os.environ.get(
-    "INIT_SQL_PATH",
-    "/opt/airflow/configs/init.sql",
-)
+NUM_PAGES = settings.ani_num_pages
+RULES_PATH = settings.validation_rules_path
+INIT_SQL_PATH = settings.init_sql_path
 
 
 # ---------------------------------------------------------------------------

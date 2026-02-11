@@ -4,6 +4,7 @@ botocore
 numpy
 pandas
 psycopg2-binary
+pydantic-settings
 python-dotenv
 requests==2.31.0
 apache-airflow==2.7.1

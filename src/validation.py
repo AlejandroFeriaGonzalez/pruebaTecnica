@@ -11,22 +11,19 @@ Comportamiento:
 """
 
 import logging
-import os
 import re
-from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 import yaml
+
+from config import settings
 
 logger = logging.getLogger("ani_scraping.validation")
 
 # ---------------------------------------------------------------------------
 # Ruta por defecto del archivo de reglas
 # ---------------------------------------------------------------------------
-_DEFAULT_RULES_PATH = os.environ.get(
-    "VALIDATION_RULES_PATH",
-    str(Path(__file__).resolve().parent.parent / "configs" / "validation_rules.yaml"),
-)
+_DEFAULT_RULES_PATH = settings.validation_rules_path
 
 
 # ---------------------------------------------------------------------------

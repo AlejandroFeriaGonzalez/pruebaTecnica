@@ -9,26 +9,13 @@ La conexión a la base de datos usa variables de entorno directas
 """
 
 import logging
-import os
 from typing import Dict, List, Tuple
 
 import pandas as pd
 
+from config import settings
+
 logger = logging.getLogger("ani_scraping.writing")
-
-
-# ---------------------------------------------------------------------------
-# Configuración de conexión
-# ---------------------------------------------------------------------------
-def _get_db_config() -> dict:
-    """Lee la configuración de BD desde variables de entorno."""
-    return {
-        "dbname": os.environ.get("DB_NAME", "airflow"),
-        "user": os.environ.get("DB_USERNAME", "airflow"),
-        "password": os.environ.get("DB_PASSWORD", "airflow"),
-        "host": os.environ.get("DB_HOST", "postgres"),
-        "port": int(os.environ.get("DB_PORT", 5432)),
-    }
 
 
 # ---------------------------------------------------------------------------
@@ -45,7 +32,7 @@ class DatabaseManager:
         import psycopg2
 
         try:
-            config = _get_db_config()
+            config = settings.db_config
             self.connection = psycopg2.connect(**config)
             self.cursor = self.connection.cursor()
             logger.info("Conexión a BD establecida (%s@%s/%s)", config["user"], config["host"], config["dbname"])
