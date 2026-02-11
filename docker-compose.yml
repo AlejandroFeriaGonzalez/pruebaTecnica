@@ -1,23 +1,32 @@
 version: '3.7'
 
 x-airflow-base: &airflow-base
-  build: . # construye con nuestro Dockerfile corregido
+  build: . # construye con nuestro Dockerfile
   user: "${AIRFLOW_UID:-50000}:${AIRFLOW_GID:-50000}"
   env_file:
-    - .env # carga GEMINI_API_KEY (y cualquier otra var. secreta)
+    - .env
   environment:
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
     AIRFLOW__CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
     AIRFLOW__API__AUTH_BACKENDS: 'airflow.api.auth.backend.basic_auth'
     PYTHONPATH: "/opt/airflow/src"
+    # Variables de conexión a BD para los módulos de escritura
+    DB_NAME: airflow
+    DB_USERNAME: airflow
+    DB_PASSWORD: airflow
+    DB_HOST: postgres
+    DB_PORT: 5432
+    # Ruta al archivo de reglas de validación
+    VALIDATION_RULES_PATH: /opt/airflow/configs/validation_rules.yaml
+    INIT_SQL_PATH: /opt/airflow/configs/init.sql
   volumes:
-    # - ./config/airflow.cfg:/opt/airflow/airflow.cfg
     - ./dags:/opt/airflow/dags
     - ./logs:/opt/airflow/logs
     - ./plugins:/opt/airflow/plugins
     - ./src:/opt/airflow/src
     - ./configs:/opt/airflow/configs
+    - ./init.sql:/opt/airflow/configs/init.sql
 
 services:
   postgres:
@@ -29,6 +38,8 @@ services:
       POSTGRES_DB: airflow
     ports:
       - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
   scheduler:
     <<: *airflow-base

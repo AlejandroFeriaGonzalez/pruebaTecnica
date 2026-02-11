@@ -1,0 +1,56 @@
+# =============================================================================
+# Reglas de validación para el scraping de normativas ANI
+# =============================================================================
+# Cada campo define:
+#   type     : tipo esperado (str, int, float, bool)
+#   regex    : expresión regular que debe cumplir (solo aplica a str)
+#   required : si es obligatorio (true → fila descartada si no cumple)
+#
+# Comportamiento:
+#   - Campo no cumple tipo/regex → queda como NULL
+#   - Campo obligatorio no cumple → fila completa descartada
+# =============================================================================
+
+fields:
+  title:
+    type: str
+    regex: "^.{1,100}$"
+    required: true
+
+  created_at:
+    type: str
+    regex: "^\\d{4}-\\d{2}-\\d{2}"
+    required: true
+
+  external_link:
+    type: str
+    regex: "^https?://"
+    required: true
+
+  entity:
+    type: str
+    required: true
+
+  summary:
+    type: str
+    required: false
+
+  gtype:
+    type: str
+    required: false
+
+  rtype_id:
+    type: int
+    required: false
+
+  classification_id:
+    type: int
+    required: false
+
+  is_active:
+    type: bool
+    required: false
+
+  update_at:
+    type: str
+    required: false
