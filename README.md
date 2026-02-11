@@ -2,6 +2,19 @@
 
 Pipeline de datos que extrae normativas del portal de la **Agencia Nacional de Infraestructura (ANI)**, las valida y las persiste en PostgreSQL, orquestado por Apache Airflow.
 
+## Entregables
+
+Este repositorio cumple con los requerimientos de la prueba técnica:
+
+| Entregable               | Archivo(s)                                                     | Descripción                                                                              |
+| ------------------------ | -------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| **Código Refactorizado** | `src/extraction.py`<br>`src/validation.py`<br>`src/writing.py` | Módulos separados para Extracción, Validación y Escritura.                               |
+| **DAG de Airflow**       | `dags/ani_scraping_dag.py`                                     | Orquestación: `create_tables` → `extract` → `validate` → `write`.                        |
+| **Reglas de Validación** | `configs/validation_rules.yaml`                                | Archivo YAML con tipos, regex y obligatoriedad por campo.                                |
+| **Esquema DDL**          | `init.sql`                                                     | Definición de tablas `regulations` y `regulations_component`.                            |
+| **README**               | `README.md`                                                    | Instrucciones de despliegue y ejecución (este archivo).                                  |
+| **Logs**                 | _(Consola Airflow)_                                            | Logs detallados por etapa: conteo de extracción, descartes por validación e inserciones. |
+
 ## Arquitectura
 
 ```
