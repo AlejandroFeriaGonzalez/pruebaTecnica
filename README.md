@@ -22,6 +22,10 @@ Extracción → Validación → Escritura
 (scraping)    (reglas YAML)  (PostgreSQL)
 ```
 
+### Airflow DAG Flow
+
+![Airflow DAG Graph](screenshots/airflow_dag_graph.png)
+
 | Componente           | Archivo                         |
 | -------------------- | ------------------------------- |
 | Extracción           | `src/extraction.py`             |
