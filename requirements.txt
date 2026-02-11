@@ -1,6 +1,8 @@
-requests
 beautifulsoup4
-pandas
+boto3
+botocore
 numpy
+pandas
 psycopg2-binary
-pyyaml
+python-dotenv
+requests
