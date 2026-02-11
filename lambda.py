@@ -13,8 +13,6 @@ from dotenv import load_dotenv
 
 load_dotenv() # Cargar variables de entorno desde el archivo .env
 
-# TODO: cambiar los print por logging para mejor control de logs en producción
-
 # Configuración de AWS Secrets Manager
 SECRET_NAME = os.environ.get("SECRET_NAME", "Test")
 REGION_NAME = os.environ.get("AWS_REGION", "us-east-1")
