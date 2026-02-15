@@ -59,12 +59,20 @@ Esto levanta:
 
 ### 2. Inicializar Airflow (primera vez)
 
+> **Nota:** Se usa `docker-compose run --rm` en lugar de `docker-compose exec` porque en el primer arranque los contenedores de Airflow se reinician continuamente al no encontrar la BD inicializada.
+
 ```bash
-docker-compose exec webserver airflow db init
-docker-compose exec webserver airflow users create \
+docker-compose run --rm webserver airflow db init
+docker-compose run --rm webserver airflow users create \
     --username admin --password admin \
     --firstname Admin --lastname User \
     --role Admin --email admin@example.com
+```
+
+Después de inicializar, reiniciar los servicios para que arranquen correctamente:
+
+```bash
+docker-compose restart scheduler webserver
 ```
 
 ### 3. Ejecutar el DAG
